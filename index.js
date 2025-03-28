@@ -3,6 +3,7 @@ const path = require('path');
 const os = require('os');
 const sqlite3 = require('sqlite3').verbose();
 const dayjs = require('dayjs');
+const { platform } = process;
 
 const TEMP_DIR = path.join(__dirname, 'temp_dbs');
 if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR);
@@ -10,9 +11,12 @@ if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR);
 const macEpochOffset = 978307200;
 const winEpochOffset = 11644473600;
 
-// それぞれのブラウザと履歴ファイルの設定
+const isMac = platform === 'darwin';
+const isWin = platform === 'win32';
+
+// ブラウザ情報をOSごとに定義
 const browsers = [
-  {
+  isMac && {
     name: 'Safari',
     dbPath: path.join(os.homedir(), 'Library', 'Safari', 'History.db'),
     query: `
@@ -35,7 +39,9 @@ const browsers = [
   },
   {
     name: 'Chrome',
-    dbPath: path.join(os.homedir(), 'Library', 'Application Support', 'Google', 'Chrome', 'Default', 'History'),
+    dbPath: isMac
+      ? path.join(os.homedir(), 'Library', 'Application Support', 'Google', 'Chrome', 'Default', 'History')
+      : path.join(process.env.LOCALAPPDATA, 'Google', 'Chrome', 'User Data', 'Default', 'History'),
     query: `
       SELECT
         url,
@@ -54,7 +60,9 @@ const browsers = [
   },
   {
     name: 'Edge',
-    dbPath: path.join(os.homedir(), 'Library', 'Application Support', 'Microsoft Edge', 'Default', 'History'),
+    dbPath: isMac
+      ? path.join(os.homedir(), 'Library', 'Application Support', 'Microsoft Edge', 'Default', 'History')
+      : path.join(process.env.LOCALAPPDATA, 'Microsoft', 'Edge', 'User Data', 'Default', 'History'),
     query: `
       SELECT
         url,
@@ -71,12 +79,12 @@ const browsers = [
     getSince: () => (dayjs().subtract(1, 'day').unix() + winEpochOffset) * 1000000,
     adjustTime: t => Math.floor(t / 1000000 - winEpochOffset)
   }
-];
+].filter(Boolean); // Safari は mac 以外では undefined になるので除外
 
 let allResults = [];
 
 function readHistory({ name, dbPath, query, getSince, adjustTime }) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (!fs.existsSync(dbPath)) {
       console.log(`🔍 ${name} の履歴ファイルが見つかりませんでした`);
       return resolve([]);
@@ -110,10 +118,9 @@ function readHistory({ name, dbPath, query, getSince, adjustTime }) {
     allResults.push(...results);
   }
 
-  // 時系列で並び替え
   allResults.sort((a, b) => a.time.localeCompare(b.time));
 
-  console.log('\n📖 過去24時間のブラウザ履歴（Safari / Chrome / Edge）：\n');
+  console.log('\n📖 過去24時間のブラウザ履歴：\n');
   allResults.forEach(r => {
     console.log(`[${r.browser}] ${r.time} - ${r.url}`);
   });
