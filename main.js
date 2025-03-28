@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const { execFile } = require('child_process');
+const generatePrompt = require('./scripts/history');
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -27,29 +27,32 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
-// 履歴 → 物語生成 → 結果表示
 ipcMain.handle('run-scripts', async () => {
-  return new Promise((resolve, reject) => {
-    const historyPath = path.join(__dirname, 'scripts', 'history.js');
-    const storygenPath = path.join(__dirname, 'scripts', 'storygen.js');
-    const storyFilePath = path.join(__dirname, 'story.txt');
+  const storygenPath = path.join(__dirname, 'scripts', 'storygen.js');
+  const storyFilePath = path.join(__dirname, 'story.txt');
 
-    // Step 1: 履歴取得スクリプトの実行
-    execFile('node', [historyPath], (err1) => {
-      if (err1) return reject(`❌ 履歴取得エラー: ${err1.message}`);
+  try {
+    // Step 1: 履歴取得（内部実行）
+    await generatePrompt();
 
-      // Step 2: 物語生成スクリプトの実行
-      execFile('node', [storygenPath], (err2) => {
-        if (err2) return reject(`❌ 物語生成エラー: ${err2.message}`);
+    // Step 2: 物語生成スクリプトを spawn
+    const { spawn } = require('child_process');
+    return new Promise((resolve, reject) => {
+      const child = spawn('node', [storygenPath]);
 
-        // Step 3: story.txt を読み込んで返す
+      let output = '';
+      child.stdout.on('data', data => output += data.toString());
+      child.stderr.on('data', data => console.error(data.toString()));
+      child.on('close', code => {
         try {
           const story = fs.readFileSync(storyFilePath, 'utf-8');
           resolve(story);
-        } catch (readErr) {
-          reject(`✅ 実行完了（ただし story.txt 読み取り失敗）: ${readErr.message}`);
+        } catch (err) {
+          reject(`✅ 実行完了（story.txt 読み込み失敗）: ${err.message}`);
         }
       });
     });
-  });
+  } catch (err) {
+    return Promise.reject(`❌ 履歴取得エラー: ${err.message}`);
+  }
 });
