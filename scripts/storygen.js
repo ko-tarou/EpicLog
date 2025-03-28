@@ -2,7 +2,8 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const baseDir = path.join(__dirname, '..');
+const baseDir = process.resourcesPath || path.join(__dirname, '..');
+// const baseDir = path.join(__dirname, '..');
 
 const modelPath = path.join(baseDir,'llama.cpp', 'models', 'qwen2.5-7b-instruct-q5_k_m.gguf');
 const llamaPath = path.join(baseDir, 'llama.cpp', 'build', 'bin', 'llama-cli');
