@@ -128,6 +128,7 @@ function readHistory({ name, dbPath, query, getSince, adjustTime }) {
   const promptHeader = 
   `# 最重要項目
 日本語で全文出力すること
+100文字以内に収めること
 
 ## 命令
 あなたは日常を物語に変える詩的な作家です。

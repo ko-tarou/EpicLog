@@ -2,28 +2,34 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-// モデルと実行ファイルのパス
 const modelPath = path.join(__dirname, 'llama.cpp', 'models', 'qwen2.5-7b-instruct-q5_k_m.gguf');
 const llamaPath = path.join(__dirname, 'llama.cpp', 'build', 'bin', 'llama-cli');
+const promptFilePath = path.join(__dirname, 'input_prompt.txt');
 
-// プロンプトをファイルから読み込む
-const prompt = fs.readFileSync('input_prompt.txt', 'utf-8');
+// 🔽 プロンプトをファイルから読み込み
+const promptText = fs.readFileSync(promptFilePath, 'utf-8');
 
-// llama.cppの実行引数
 const args = [
   '-m', modelPath,
-  '-p', prompt,
+  '-no-cnv',
+  '--prompt', promptText,
   '-n', '512',
-  '--color'
+  '--color',
+  '--temp', '0.8',
+  '--top-p', '0.95',
+  '--repeat_penalty', '1.1',
 ];
 
-// 実行開始
 console.log('🚀 Qwenに物語生成を依頼中...\n');
 
 const llama = spawn(llamaPath, args);
 
+let output = '';
+
 llama.stdout.on('data', (data) => {
-  process.stdout.write(data.toString());
+  const text = data.toString();
+  process.stdout.write(text);
+  output += text;
 });
 
 llama.stderr.on('data', (data) => {
@@ -31,5 +37,6 @@ llama.stderr.on('data', (data) => {
 });
 
 llama.on('close', (code) => {
-  console.log(`\n🧠 出力完了（コード: ${code}）`);
+  fs.writeFileSync('story.txt', output, 'utf-8');
+  console.log(`\n📚 物語を story.txt に保存しました！`);
 });
