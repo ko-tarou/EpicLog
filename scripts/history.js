@@ -4,8 +4,6 @@ const os = require('os');
 const sqlite3 = require('sqlite3').verbose();
 const dayjs = require('dayjs');
 const { platform } = process;
-
-// Electronのdialogを使えるようにする（mainプロセスで動いている前提）
 const { dialog } = require('electron');
 
 module.exports = async function generatePrompt() {
@@ -31,7 +29,21 @@ module.exports = async function generatePrompt() {
     isMac && {
       name: 'Safari',
       dbPath: path.join(os.homedir(), 'Library', 'Safari', 'History.db'),
-      query: `...`,
+      query: `
+        SELECT
+          hi.url,
+          hv.visit_time,
+          'Safari' AS browser
+        FROM
+          history_visits hv
+        JOIN
+          history_items hi ON hv.history_item = hi.id
+        WHERE
+          hv.visit_time > ?
+        ORDER BY
+          hv.visit_time DESC
+        LIMIT 100
+      `,
       getSince: () => dayjs().subtract(1, 'day').unix() - macEpochOffset,
       adjustTime: t => t + macEpochOffset
     },
@@ -40,7 +52,19 @@ module.exports = async function generatePrompt() {
       dbPath: isMac
         ? path.join(os.homedir(), 'Library', 'Application Support', 'Google', 'Chrome', 'Default', 'History')
         : path.join(process.env.LOCALAPPDATA, 'Google', 'Chrome', 'User Data', 'Default', 'History'),
-      query: `...`,
+      query: `
+        SELECT
+          url,
+          last_visit_time,
+          'Chrome' AS browser
+        FROM
+          urls
+        WHERE
+          last_visit_time > ?
+        ORDER BY
+          last_visit_time DESC
+        LIMIT 100
+      `,
       getSince: () => (dayjs().subtract(1, 'day').unix() + winEpochOffset) * 1000000,
       adjustTime: t => Math.floor(t / 1000000 - winEpochOffset)
     },
@@ -49,7 +73,19 @@ module.exports = async function generatePrompt() {
       dbPath: isMac
         ? path.join(os.homedir(), 'Library', 'Application Support', 'Microsoft Edge', 'Default', 'History')
         : path.join(process.env.LOCALAPPDATA, 'Microsoft', 'Edge', 'User Data', 'Default', 'History'),
-      query: `...`,
+      query: `
+        SELECT
+          url,
+          last_visit_time,
+          'Edge' AS browser
+        FROM
+          urls
+        WHERE
+          last_visit_time > ?
+        ORDER BY
+          last_visit_time DESC
+        LIMIT 100
+      `,
       getSince: () => (dayjs().subtract(1, 'day').unix() + winEpochOffset) * 1000000,
       adjustTime: t => Math.floor(t / 1000000 - winEpochOffset)
     }
@@ -117,6 +153,9 @@ module.exports = async function generatePrompt() {
   const promptBody = limitedResults.map(r => `[${r.browser}] ${r.time} - ${r.url}`).join('\n');
   const prompt = `${promptHeader}${promptBody}\n\n物語：`;
 
-  fs.writeFileSync(path.join(__dirname, '..', 'input_prompt.txt'), prompt, 'utf-8');
+  // ✅ 保存先のディレクトリを実行環境に応じて変更
+  const baseDir = process.resourcesPath || path.join(__dirname, '..');
+  fs.writeFileSync(path.join(baseDir, 'input_prompt.txt'), prompt, 'utf-8');
+
   console.log('\n📝 プロンプトを input_prompt.txt に保存しました！');
 };
