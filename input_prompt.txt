@@ -5,8 +5,35 @@
 あなたは日常を物語に変える詩的な作家です。
 以下のブラウザ履歴をもとに、感情を交えてその人の1日を描写してください。
 
-[09:00] https://zenn.dev/...
-[11:30] https://qiita.com/...
-[13:45] https://www.youtube.com/...
+[Safari] 2025-03-28 01:35 - https://www.youtube.com/watch?v=QjrkrVmC-8M&list=RDjg09lNupc1s&index=23
+[Safari] 2025-03-28 01:38 - https://qiita.com/shuntaro_tamura/items/06281261d893acf049ed
+[Safari] 2025-03-28 01:38 - https://www.google.com/search?client=safari&rls=en&q=%E7%9B%B4%E5%89%8D%E3%81%AE%E3%82%B3%E3%83%9F%E3%83%83%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E6%B6%88%E3%81%99&ie=UTF-8&oe=UTF-8
+[Safari] 2025-03-28 01:38 - https://www.google.com/search?client=safari&rls=en&q=%E7%9B%B4%E5%89%8D%E3%81%AE%E3%82%B3%E3%83%9F%E3%83%83%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E6%B6%88%E3%81%99&ie=UTF-8&oe=UTF-8
+[Safari] 2025-03-28 01:38 - https://www.google.com/search?client=safari&rls=en&q=%E7%9B%B4%E5%89%8D%E3%81%AE%E3%82%B3%E3%83%9F%E3%83%83%E3%83%88%E3%82%92%E5%8F%96%E3%82%8A%E6%B6%88%E3%81%99&ie=UTF-8&oe=UTF-8
+[Safari] 2025-03-28 01:39 - https://phoeducation.work/entry/20210817/1629154680#%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B8%E3%81%97%E3%81%9F%E5%A4%89%E6%9B%B4%E3%82%92%E5%8F%96%E3%82%8A%E6%B6%88%E3%81%9D%E3%81%86
+[Safari] 2025-03-28 01:39 - https://phoeducation.work/entry/20210817/1629154680
+[Safari] 2025-03-28 01:39 - https://www.google.com/search?q=%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%B0%E3%82%92%E5%8F%96%E3%82%8A%E6%B6%88%E3%81%99&client=safari&sca_esv=1fe3e7095f1a8e23&rls=en&sxsrf=AHTn8zrPQPN4O6FS3-76GW1N2jLrbg-tbQ%3A1743093518164&ei=Dn_lZ-jnCbnZ0-kP5pyLCA&ved=0ahUKEwjoptev2aqMAxW57DQHHWbOAgEQ4dUDCBA&uact=5&oq=%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%B0%E3%82%92%E5%8F%96%E3%82%8A%E6%B6%88%E3%81%99&gs_lp=Egxnd3Mtd2l6LXNlcnAiIeOCueODhuODvOOCuOODs-OCsOOCkuWPluOCiua2iOOBmTIFEAAYgAQyBRAAGO8FMgUQABjvBTIIEAAYgAQYogQyBRAAGO8FMgYQABgFGB5IkC1Qog9YsCpwCHgAkAEAmAGKAaAByw2qAQM4Ljm4AQPIAQD4AQGYAhOgAuIJwgIKEAAYsAMY1gQYR8ICCBAAGAQYBxgewgIIEAAYogQYiQXCAgYQABgHGB6YAwCIBgGQBgqSBwQxMi43oAe-L7IHAzQuN7gHwgk&sclient=gws-wiz-serp
+[Safari] 2025-03-28 01:39 - https://www.google.com/search?q=%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%B0%E3%82%92%E5%8F%96%E3%82%8A%E6%B6%88%E3%81%99&client=safari&sca_esv=1fe3e7095f1a8e23&rls=en&sxsrf=AHTn8zrPQPN4O6FS3-76GW1N2jLrbg-tbQ%3A1743093518164&ei=Dn_lZ-jnCbnZ0-kP5pyLCA&ved=0ahUKEwjoptev2aqMAxW57DQHHWbOAgEQ4dUDCBA&uact=5&oq=%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%B0%E3%82%92%E5%8F%96%E3%82%8A%E6%B6%88%E3%81%99&gs_lp=Egxnd3Mtd2l6LXNlcnAiIeOCueODhuODvOOCuOODs-OCsOOCkuWPluOCiua2iOOBmTIFEAAYgAQyBRAAGO8FMgUQABjvBTIIEAAYgAQYogQyBRAAGO8FMgYQABgFGB5IkC1Qog9YsCpwCHgAkAEAmAGKAaAByw2qAQM4Ljm4AQPIAQD4AQGYAhOgAuIJwgIKEAAYsAMY1gQYR8ICCBAAGAQYBxgewgIIEAAYogQYiQXCAgYQABgHGB6YAwCIBgGQBgqSBwQxMi43oAe-L7IHAzQuN7gHwgk&sclient=gws-wiz-serp
+[Safari] 2025-03-28 01:39 - https://www.google.com/search?q=%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%B0%E3%82%92%E5%8F%96%E3%82%8A%E6%B6%88%E3%81%99&client=safari&sca_esv=1fe3e7095f1a8e23&rls=en&sxsrf=AHTn8zrPQPN4O6FS3-76GW1N2jLrbg-tbQ%3A1743093518164&ei=Dn_lZ-jnCbnZ0-kP5pyLCA&ved=0ahUKEwjoptev2aqMAxW57DQHHWbOAgEQ4dUDCBA&uact=5&oq=%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%B0%E3%82%92%E5%8F%96%E3%82%8A%E6%B6%88%E3%81%99&gs_lp=Egxnd3Mtd2l6LXNlcnAiIeOCueODhuODvOOCuOODs-OCsOOCkuWPluOCiua2iOOBmTIFEAAYgAQyBRAAGO8FMgUQABjvBTIIEAAYgAQYogQyBRAAGO8FMgYQABgFGB5IkC1Qog9YsCpwCHgAkAEAmAGKAaAByw2qAQM4Ljm4AQPIAQD4AQGYAhOgAuIJwgIKEAAYsAMY1gQYR8ICCBAAGAQYBxgewgIIEAAYogQYiQXCAgYQABgHGB6YAwCIBgGQBgqSBwQxMi43oAe-L7IHAzQuN7gHwgk&sclient=gws-wiz-serp
+[Safari] 2025-03-28 01:40 - https://chatgpt.com/g/g-674dbe5058608191afd26c903450eeb3-mo-neng/c/67e57f96-6b34-800a-a0f4-f4c93aec8074
+[Safari] 2025-03-28 01:40 - https://www.youtube.com/watch?v=ljnQNn8We2U&list=RDjg09lNupc1s&index=24
+[Safari] 2025-03-28 01:40 - https://chatgpt.com/g/g-674dbe5058608191afd26c903450eeb3-mo-neng
+[Safari] 2025-03-28 01:44 - https://github.com/ko-tarou/EpicLog
+[Safari] 2025-03-28 01:44 - https://github.com/ko-tarou/EpicLog
+[Safari] 2025-03-28 01:44 - https://github.com/ko-tarou/EpicLog
+[Safari] 2025-03-28 01:44 - https://github.com/ko-tarou/EpicLog
+[Safari] 2025-03-28 13:55 - https://mail.google.com/mail/u/0/#inbox
+[Safari] 2025-03-28 13:56 - https://chatgpt.com/g/g-674dbe5058608191afd26c903450eeb3-mo-neng/c/67e62c07-45ac-800a-894d-88c32f572975
+[Safari] 2025-03-28 13:56 - https://chatgpt.com/g/g-674dbe5058608191afd26c903450eeb3-mo-neng
+[Safari] 2025-03-28 13:56 - https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTqBMjVjrkkbvHPgQwQNtKKdK
+[Safari] 2025-03-28 13:57 - https://mail.google.com/mail/u/0/#inbox
+[Safari] 2025-03-28 13:57 - https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTqBMjVjjXQmvgNkkmMwZfDGZ
+[Safari] 2025-03-28 13:57 - https://mail.google.com/mail/u/0/#inbox
+[Safari] 2025-03-28 13:57 - https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTqBMjVjrkkbvHPgQwQNtKKdK
+[Safari] 2025-03-28 13:57 - https://mail.google.com/mail/u/0/#inbox
+[Safari] 2025-03-28 13:58 - https://www.youtube.com/@Jene_Azure/videos
+[Safari] 2025-03-28 13:58 - https://www.youtube.com/@Jene_Azure
+[Safari] 2025-03-28 13:58 - https://www.youtube.com/
+[Safari] 2025-03-28 13:59 - https://www.youtube.com/watch?v=moF1Iii8mCQ
 
 物語：

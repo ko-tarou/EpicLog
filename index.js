@@ -14,7 +14,6 @@ const winEpochOffset = 11644473600;
 const isMac = platform === 'darwin';
 const isWin = platform === 'win32';
 
-// ブラウザ情報をOSごとに定義
 const browsers = [
   isMac && {
     name: 'Safari',
@@ -79,7 +78,7 @@ const browsers = [
     getSince: () => (dayjs().subtract(1, 'day').unix() + winEpochOffset) * 1000000,
     adjustTime: t => Math.floor(t / 1000000 - winEpochOffset)
   }
-].filter(Boolean); // Safari は mac 以外では undefined になるので除外
+].filter(Boolean);
 
 let allResults = [];
 
@@ -124,4 +123,23 @@ function readHistory({ name, dbPath, query, getSince, adjustTime }) {
   allResults.forEach(r => {
     console.log(`[${r.browser}] ${r.time} - ${r.url}`);
   });
+
+  // 🔥 プロンプト自動生成
+  const promptHeader = 
+  `# 最重要項目
+日本語で全文出力すること
+
+## 命令
+あなたは日常を物語に変える詩的な作家です。
+以下のブラウザ履歴をもとに、感情を交えてその人の1日を描写してください。
+
+`;
+  const limitedResults = allResults.slice(-30); // ←最後の30件だけ使う
+  const promptBody = limitedResults.map(r => `[${r.browser}] ${r.time} - ${r.url}`).join('\n');
+
+  // const promptBody = allResults.map(r => `[${r.browser}] ${r.time} - ${r.url}`).join('\n');
+  const prompt = `${promptHeader}${promptBody}\n\n物語：`;
+
+  fs.writeFileSync('input_prompt.txt', prompt, 'utf-8');
+  console.log('\n📝 プロンプトを input_prompt.txt に保存しました！');
 })();
