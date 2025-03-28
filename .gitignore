@@ -5,3 +5,4 @@ node_modules/
 dist/
 out/
 history_safari.db
+temp_dbs/
