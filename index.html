@@ -1,13 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <title>EpicLog</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1>🚀 EpicLog</h1>
-  <button id="runBtn">物語を生成</button>
-  <pre id="output"></pre>
+<body class="bg-gradient-to-b from-[#0f172a] to-[#1e293b] text-yellow-100 min-h-screen flex flex-col items-center justify-center font-sans">
+
+  <!-- ヘッダー -->
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold text-yellow-300">EpicLog</h1>
+    <p class="text-lg italic text-yellow-200">Where ordinary days become extraordinary tales</p>
+  </header>
+
+  <!-- メインコンテナ -->
+  <main class="bg-[#0f172a] p-8 rounded-xl shadow-lg w-full max-w-3xl">
+
+    <!-- タイトル行とナビ -->
+    <div class="flex justify-between items-center mb-4 text-yellow-200">
+      <h2 class="text-xl font-semibold">Your Story Awaits</h2>
+      <div class="flex space-x-4">
+        <button class="hover:text-yellow-400 flex items-center"><span>🕘</span> History</button>
+        <button class="hover:text-yellow-400 flex items-center"><span>⚙️</span> Settings</button>
+      </div>
+    </div>
+
+    <!-- 出力エリア -->
+    <div id="output" class="bg-[#1e293b] text-yellow-100 p-6 rounded-md min-h-[200px] flex flex-col items-center justify-center text-center italic transition-all duration-300">
+      <p id="placeholderText" class="mb-4">Your dramatic tale will appear here...</p>
+      <button id="runBtn" class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded shadow flex items-center">
+        ✨ Generate Epic Tale
+      </button>
+    </div>
+
+    <!-- 下部の操作ボタン（出力後に表示予定）-->
+    <div class="mt-6 flex justify-center space-x-4">
+      <button id="discardBtn" class="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded shadow hidden">Discard</button>
+      <button id="saveBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow hidden">Save to Your Chronicles</button>
+    </div>
+
+  </main>
+
+  <!-- スクリプト -->
   <script src="renderer.js"></script>
+
 </body>
 </html>
