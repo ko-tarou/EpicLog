@@ -28,11 +28,20 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
+// スクリプト実行ハンドラ
 ipcMain.handle('run-scripts', async () => {
   try {
-    await generatePrompt();
-    const isPackaged = app.isPackaged;
-    const story = await generateStory(isPackaged); // ← パッケージ状態を渡す！
+    // 書き込み先（userDataフォルダ）
+    const userDataDir = app.getPath('userData');
+    const inputPath = path.join(userDataDir, 'input_prompt.txt');
+    const storyPath = path.join(userDataDir, 'story.txt');
+
+    // プロンプト生成 → input_prompt.txt 書き込み
+    await generatePrompt(inputPath);
+
+    // 物語生成 → story.txt 書き込み
+    const story = await generateStory(app.isPackaged, inputPath, storyPath);
+
     return story;
   } catch (err) {
     return Promise.reject(`❌ 実行エラー: ${err.message}`);

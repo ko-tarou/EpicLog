@@ -6,13 +6,12 @@ const dayjs = require('dayjs');
 const { platform } = process;
 const { dialog } = require('electron');
 
-module.exports = async function generatePrompt() {
+module.exports = async function generatePrompt(savePath) {
   const TEMP_DIR = path.join(__dirname, '..', 'temp_dbs');
   if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR);
 
   const macEpochOffset = 978307200;
   const winEpochOffset = 11644473600;
-
   const isMac = platform === 'darwin';
   const isWin = platform === 'win32';
 
@@ -30,18 +29,11 @@ module.exports = async function generatePrompt() {
       name: 'Safari',
       dbPath: path.join(os.homedir(), 'Library', 'Safari', 'History.db'),
       query: `
-        SELECT
-          hi.url,
-          hv.visit_time,
-          'Safari' AS browser
-        FROM
-          history_visits hv
-        JOIN
-          history_items hi ON hv.history_item = hi.id
-        WHERE
-          hv.visit_time > ?
-        ORDER BY
-          hv.visit_time DESC
+        SELECT hi.url, hv.visit_time, 'Safari' AS browser
+        FROM history_visits hv
+        JOIN history_items hi ON hv.history_item = hi.id
+        WHERE hv.visit_time > ?
+        ORDER BY hv.visit_time DESC
         LIMIT 100
       `,
       getSince: () => dayjs().subtract(1, 'day').unix() - macEpochOffset,
@@ -53,16 +45,10 @@ module.exports = async function generatePrompt() {
         ? path.join(os.homedir(), 'Library', 'Application Support', 'Google', 'Chrome', 'Default', 'History')
         : path.join(process.env.LOCALAPPDATA, 'Google', 'Chrome', 'User Data', 'Default', 'History'),
       query: `
-        SELECT
-          url,
-          last_visit_time,
-          'Chrome' AS browser
-        FROM
-          urls
-        WHERE
-          last_visit_time > ?
-        ORDER BY
-          last_visit_time DESC
+        SELECT url, last_visit_time, 'Chrome' AS browser
+        FROM urls
+        WHERE last_visit_time > ?
+        ORDER BY last_visit_time DESC
         LIMIT 100
       `,
       getSince: () => (dayjs().subtract(1, 'day').unix() + winEpochOffset) * 1000000,
@@ -74,16 +60,10 @@ module.exports = async function generatePrompt() {
         ? path.join(os.homedir(), 'Library', 'Application Support', 'Microsoft Edge', 'Default', 'History')
         : path.join(process.env.LOCALAPPDATA, 'Microsoft', 'Edge', 'User Data', 'Default', 'History'),
       query: `
-        SELECT
-          url,
-          last_visit_time,
-          'Edge' AS browser
-        FROM
-          urls
-        WHERE
-          last_visit_time > ?
-        ORDER BY
-          last_visit_time DESC
+        SELECT url, last_visit_time, 'Edge' AS browser
+        FROM urls
+        WHERE last_visit_time > ?
+        ORDER BY last_visit_time DESC
         LIMIT 100
       `,
       getSince: () => (dayjs().subtract(1, 'day').unix() + winEpochOffset) * 1000000,
@@ -131,7 +111,6 @@ module.exports = async function generatePrompt() {
   }
 
   let allResults = [];
-
   for (const browser of browsers) {
     const results = await readHistory(browser);
     allResults.push(...results);
@@ -141,8 +120,13 @@ module.exports = async function generatePrompt() {
 
   const promptHeader = 
 `# 最重要項目
+物語が終わったら、出力を停止すること
+200文字以内に収めること
+
+## 重要項目
 日本語で全文出力すること
-100文字以内に収めること
+物語の中身だけを出力すること
+この指示文を含めないこと
 
 ## 命令
 あなたは日常を物語に変える詩的な作家です。
@@ -153,9 +137,6 @@ module.exports = async function generatePrompt() {
   const promptBody = limitedResults.map(r => `[${r.browser}] ${r.time} - ${r.url}`).join('\n');
   const prompt = `${promptHeader}${promptBody}\n\n物語：`;
 
-  // ✅ 保存先のディレクトリを実行環境に応じて変更
-  const baseDir = process.resourcesPath || path.join(__dirname, '..');
-  fs.writeFileSync(path.join(baseDir, 'input_prompt.txt'), prompt, 'utf-8');
-
-  console.log('\n📝 プロンプトを input_prompt.txt に保存しました！');
+  fs.writeFileSync(savePath, prompt, 'utf-8');
+  console.log(`📝 プロンプトを保存しました！ → ${savePath}`);
 };
