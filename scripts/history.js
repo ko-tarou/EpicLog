@@ -13,7 +13,18 @@ module.exports = async function generatePrompt(savePath) {
   const macEpochOffset = 978307200;
   const winEpochOffset = 11644473600;
   const isMac = platform === 'darwin';
-  const isWin = platform === 'win32';
+
+  // よく使うサービスの日本語化マップ
+  const domainMap = {
+    'deepl.com': 'DeepL翻訳',
+    'chat.openai.com': 'ChatGPT',
+    'drive.google.com': 'Googleドライブ',
+    'mail.google.com': 'Gmail',
+    'v0.dev': 'プロジェクトV0',
+    'github.com': 'GitHub',
+    'notion.so': 'Notion',
+    'youtube.com': 'YouTube',
+  };
 
   function hasAccessToFile(filePath) {
     try {
@@ -71,7 +82,7 @@ module.exports = async function generatePrompt(savePath) {
     }
   ].filter(Boolean);
 
-  function readHistory({ name, dbPath, query, getSince, adjustTime }) {
+  async function readHistory({ name, dbPath, query, getSince, adjustTime }) {
     return new Promise((resolve) => {
       if (!fs.existsSync(dbPath)) {
         console.log(`🔍 ${name} の履歴ファイルが見つかりませんでした`);
@@ -83,7 +94,7 @@ module.exports = async function generatePrompt(savePath) {
         dialog.showMessageBoxSync({
           type: 'warning',
           title: 'フルディスクアクセスが必要です',
-          message: `${name} の履歴にアクセスするには、\n\n「システム設定 > プライバシーとセキュリティ > フルディスクアクセス」で\nEpicLog を許可してください。\n\nその後アプリを再起動してください。`
+          message: `${name} の履歴にアクセスするには、「プライバシーとセキュリティ > フルディスクアクセス」でEpicLogを許可してください。`
         });
         return resolve([]);
       }
@@ -98,11 +109,23 @@ module.exports = async function generatePrompt(savePath) {
           return resolve([]);
         }
 
-        const results = rows.map(row => ({
-          time: dayjs.unix(adjustTime(row.last_visit_time || row.visit_time)).format('YYYY-MM-DD HH:mm'),
-          url: row.url,
-          browser: row.browser || name
-        }));
+        const results = rows.map(row => {
+          try {
+            const parsed = new URL(row.url);
+            let domain = parsed.hostname.replace(/^www\./, '');
+            const readable = domainMap[domain] || domain.replace(/\.com$/, 'サービス');
+
+            return {
+              time: dayjs.unix(adjustTime(row.last_visit_time || row.visit_time)).format('YYYY-MM-DD HH:mm'),
+              url: readable,
+              browser: name
+            };
+          } catch {
+            return null;
+          }
+        }).filter(Boolean);
+
+        console.log(`📥 ${name} から ${results.length} 件の履歴を取得`);
 
         db.close();
         resolve(results);
@@ -117,26 +140,29 @@ module.exports = async function generatePrompt(savePath) {
   }
 
   allResults.sort((a, b) => a.time.localeCompare(b.time));
-
-  const promptHeader = 
-`# 最重要項目
-物語が終わったら、出力を停止すること
-200文字以内に収めること
-
-## 重要項目
-日本語で全文出力すること
-物語の中身だけを出力すること
-この指示文を含めないこと
-
-## 命令
-あなたは日常を物語に変える詩的な作家です。
-以下のブラウザ履歴をもとに、感情を交えてその人の1日を描写してください。
-
-`;
   const limitedResults = allResults.slice(-30);
-  const promptBody = limitedResults.map(r => `[${r.browser}] ${r.time} - ${r.url}`).join('\n');
-  const prompt = `${promptHeader}${promptBody}\n\n物語：`;
+
+  const prompt = `
+# 出力ルール
+- 解説や注釈を含めないこと
+- 物語を終えたら、「終了」と記載し、終了すること
+- 400文字以内を厳守
+
+# 命令
+以下のサービス利用履歴をもとに、
+ユーザーがどのような一日を過ごしたか、
+感情や雰囲気も交えて物語として400字程度で描写してください。
+すべて日本語で出力すること。
+
+${limitedResults.map(r => `[${r.browser}] ${r.time} - ${r.url}`).join('\n')}
+
+物語：
+`.trim();
 
   fs.writeFileSync(savePath, prompt, 'utf-8');
   console.log(`📝 プロンプトを保存しました！ → ${savePath}`);
+
+  console.log('\n--- プロンプト内容 ---\n');
+  console.log(prompt);
+  console.log('\n---------------------\n');
 };
