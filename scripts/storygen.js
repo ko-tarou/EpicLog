@@ -44,13 +44,6 @@ module.exports = async function generateStory(isPackaged = false, promptFilePath
 
   draftStory = draftStory.split(/終了|end of text/i)[0].trim();
 
-  // 文字化け行（�）を除去
-  draftStory = draftStory
-  .split('\n')
-  .map(line => line.trim())
-  .filter(line => line.length > 0 && !line.includes('�'))
-  .join('\n');
-
   // 👇 ログ出力を追加
   console.log('\n--- 初稿出力（rawOutput） ---\n');
   console.log(draftStory);
