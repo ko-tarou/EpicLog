@@ -1,8 +1,14 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron'); // ✅ ここで全部まとめてOK
 const path = require('path');
 const fs = require('fs');
 const generatePrompt = require('./scripts/history');
 const generateStory = require('./scripts/storygen');
+const { saveStoryLog } = require('./scripts/storage'); // ✅ OK
+
+// 保存イベントの受け取り
+ipcMain.on('save-story', (event, data) => {
+  saveStoryLog(data);
+});
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -31,18 +37,17 @@ app.on('window-all-closed', () => {
 // スクリプト実行ハンドラ
 ipcMain.handle('run-scripts', async () => {
   try {
-    // 書き込み先（userDataフォルダ）
     const userDataDir = app.getPath('userData');
     const inputPath = path.join(userDataDir, 'input_prompt.txt');
     const storyPath = path.join(userDataDir, 'story.txt');
 
-    // プロンプト生成 → input_prompt.txt 書き込み
+    // プロンプト生成 → ファイル書き出し
     await generatePrompt(inputPath);
 
-    // 物語生成 → story.txt 書き込み
+    // LLMによる生成 → 結果を取得
     const story = await generateStory(app.isPackaged, inputPath, storyPath);
 
-    return story;
+    return story; // ← ストーリー本文のみ返す
   } catch (err) {
     return Promise.reject(`❌ 実行エラー: ${err.message}`);
   }

@@ -7,3 +7,4 @@ out/
 history_safari.db
 temp_dbs/
 llama.cpp/
+data/

@@ -89,6 +89,8 @@ ${draftStory}
   
   finalStory = finalStory.split(/終了|end of text/i)[0].trim();
 
+  console.log(`📚 Final story saved to ${finalStory}`);
+
   // 文字化け行（�）を除去
   finalStory = finalStory
   .split('\n')

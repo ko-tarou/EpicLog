@@ -4,6 +4,8 @@ const placeholderText = document.getElementById('placeholderText');
 const saveBtn = document.getElementById('saveBtn');
 const discardBtn = document.getElementById('discardBtn');
 
+let lastGeneratedStory = '';
+
 runBtn.addEventListener('click', async () => {
   // 初期状態リセット
   runBtn.style.display = 'none';
@@ -12,12 +14,11 @@ runBtn.addEventListener('click', async () => {
   discardBtn.classList.add('hidden');
 
   try {
-    const result = await window.ipcBridge.runScripts();
+    const result = await window.ipcBridge.runScripts(); // ← ストーリー本文だけを返す前提
 
-    // 出力表示
-    outputEl.innerHTML = `<p class="whitespace-pre-wrap mb-4">${result}</p>`;
+    lastGeneratedStory = result;
+    outputEl.innerHTML = `<p class="whitespace-pre-wrap mb-4">${lastGeneratedStory}</p>`;
 
-    // ボタン再表示
     saveBtn.classList.remove('hidden');
     discardBtn.classList.remove('hidden');
   } catch (e) {
@@ -25,7 +26,6 @@ runBtn.addEventListener('click', async () => {
   }
 });
 
-// Discard ボタンで初期状態に戻す処理
 discardBtn.addEventListener('click', () => {
   outputEl.innerHTML = `
     <p id="placeholderText" class="mb-4">Your dramatic tale will appear here...</p>
@@ -36,17 +36,32 @@ discardBtn.addEventListener('click', () => {
   saveBtn.classList.add('hidden');
   discardBtn.classList.add('hidden');
 
-  // 再度バインド（動的に作り直したので）
   document.getElementById('runBtn').addEventListener('click', async () => {
     runBtn.style.display = 'none';
     outputEl.innerHTML = `<p class="mb-4">生成中...</p>`;
     try {
       const result = await window.ipcBridge.runScripts();
-      outputEl.innerHTML = `<p class="whitespace-pre-wrap mb-4">${result}</p>`;
+      lastGeneratedStory = result;
+      outputEl.innerHTML = `<p class="whitespace-pre-wrap mb-4">${lastGeneratedStory}</p>`;
       saveBtn.classList.remove('hidden');
       discardBtn.classList.remove('hidden');
     } catch (e) {
       outputEl.innerHTML = `<p class="text-red-400">エラー: ${e}</p>`;
     }
   });
+});
+
+saveBtn.addEventListener('click', () => {
+  if (!lastGeneratedStory) return;
+
+  const entry = {
+    date: new Date().toISOString(),
+    story: lastGeneratedStory
+  };
+
+  window.ipcBridge.saveStory(entry);
+
+  outputEl.innerHTML += `<p class="text-green-500 mt-2">✅ 保存しました</p>`;
+  saveBtn.classList.add('hidden');
+  discardBtn.classList.add('hidden');
 });
