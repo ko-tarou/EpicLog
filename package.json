@@ -1,6 +1,6 @@
 {
   "name": "epiclog",
-  "version": "3.3.0",
+  "version": "3.3.2",
   "main": "main.js",
   "description": "",
   "author": "",
@@ -45,7 +45,10 @@
       "target": "dmg"
     },
     "win": {
-      "target": "nsis"
+    "target": "nsis",
+    "signAndEditExecutable": false,
+    "signExts": [],
+    "signtoolOptions": null
     }
   }
 }
