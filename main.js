@@ -3,11 +3,15 @@ const path = require('path');
 const fs = require('fs');
 const generatePrompt = require('./scripts/history');
 const generateStory = require('./scripts/storygen');
-const { saveStoryLog } = require('./scripts/storage'); // ✅ OK
+const { saveStoryLog, loadStoryLogs } = require('./scripts/storage');
 
 // 保存イベントの受け取り
 ipcMain.on('save-story', (event, data) => {
   saveStoryLog(data);
+});
+
+ipcMain.handle('load-history', () => {
+  return loadStoryLogs(); // 配列で返す
 });
 
 function createWindow() {

@@ -21,3 +21,10 @@ function saveStoryLog(entry) {
 }
 
 module.exports = { saveStoryLog };
+
+function loadStoryLogs() {
+    if (!fs.existsSync(historyFilePath)) return [];
+    return JSON.parse(fs.readFileSync(historyFilePath, 'utf-8'));
+}
+
+module.exports = { saveStoryLog, loadStoryLogs };  

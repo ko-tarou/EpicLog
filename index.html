@@ -20,8 +20,13 @@
     <div class="flex justify-between items-center mb-4 text-yellow-200">
       <h2 class="text-xl font-semibold">Your Story Awaits</h2>
       <div class="flex space-x-4">
-        <button class="hover:text-yellow-400 flex items-center"><span>🕘</span> History</button>
-        <button class="hover:text-yellow-400 flex items-center"><span>⚙️</span> Settings</button>
+        <!-- ✅ 履歴表示ボタン -->
+        <button id="showHistoryBtn" class="hover:text-yellow-400 flex items-center">
+          <span>🕘</span>&nbsp;History
+        </button>
+        <button class="hover:text-yellow-400 flex items-center">
+          <span>⚙️</span>&nbsp;Settings
+        </button>
       </div>
     </div>
 
@@ -38,6 +43,12 @@
       <button id="discardBtn" class="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded shadow hidden">Discard</button>
       <button id="saveBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded shadow hidden">Save to Your Chronicles</button>
     </div>
+
+    <!-- ✅ 履歴表示エリア -->
+    <section class="mt-8 w-full">
+      <h3 class="text-lg text-yellow-300 mb-2">📚 Past Stories</h3>
+      <ul id="historyList" class="space-y-4"></ul>
+    </section>
 
   </main>
 
